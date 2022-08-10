@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recette - Recettes{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-4">
+
+        <h1>Mes recettes</h1>
+
+        <a href="{{ path('recipe.new') }}" class="btn btn-primary">Créer une recette</a>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% if not recipes is same as([]) %}
+
+            <br/>
+
+            <small>Il y a {{ recipes.getTotalItemCount }} recettes </small>
+
+            <table class="table table-hover mt-1">
+                <thead>
+                <tr class="table-primary">
+                    <th scope="col">Numero</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Difficulté</th>
+                    <th scope="col">Date Ajout</th>
+                    <th scope="col">Edition</th>
+                    <th scope="col">Suppression</th>
+                </tr>
+                </thead>
+
+
+                <tbody>
+
+
+                {% for recipe in recipes %}
+                    <tr class="table-secondary">
+                        <td>{{ recipe.id }}</td>
+                        <td>{{ recipe.name }}</td>
+                        <td>{{ (recipe.price is null) ? 'non renseigné': recipe.price}}</td>
+                        <td>{{ recipe.difficulty }}</td>
+                        <td>{{ recipe.createdAt | date("d/m/Y")}}</td>
+                        <td>
+                            <a class="btn btn-info" href="{{ path('recipe.edit', {id:recipe.id}) }}">Editer</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-warning" href="{{ path('recipe.delete', {id:recipe.id}) }}" onclick="return confirm('Etes vous sure de vouloir supprimer ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+            {# display navigation #}
+            <div class="navigation d-flex justify-content-center">
+                {{ knp_pagination_render(recipes) }}
+            </div>
+
+        {% else %}
+            <h4>Il n'y a pas de recettes</h4>
+        {% endif %}
+
+    </div>
+{% endblock %}
+
