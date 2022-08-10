@@ -14,10 +14,10 @@ class UserListener
         $this->userHash = $userHash;
     }
 
-    /*public function prePersist(User $user)
+    public function prePersist(User $user)
     {
         $this->encodePassword($user);
-    }*/
+    }
 
     public function preUpdate(User $user)
     {
