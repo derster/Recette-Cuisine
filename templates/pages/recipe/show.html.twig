@@ -20,9 +20,9 @@
             <img style="max-width: 500px;" src="{{ vich_uploader_asset(recipe, 'imageFile') }}">
         </div>#}
 
-        {#<p>La moyenne de cette recette est de
+        <p>La moyenne de cette recette est de
             {{ recipe.average|number_format(2, '.', ',') }}
-            /5</p>#}
+            /5</p>
 
         <div>
 			<span class="badge bg-primary">Créée le
@@ -46,7 +46,6 @@
                 <p>Difficulté non renseigné</p>
             {% endif %}
         </div>
-
         <div class="mt-4">
             {% if recipe.time %}
                 <p>Pour
@@ -77,9 +76,9 @@
             {% endfor %}
         </div>
 
-        {#<div class="mark">
+        <div class="mark">
             {{ form(form) }}
-        </div>#}
+        </div>
 
     </div>
 {% endblock %}
