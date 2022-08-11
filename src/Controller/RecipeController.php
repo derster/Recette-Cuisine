@@ -32,6 +32,43 @@ class RecipeController extends AbstractController
         ]);
     }
 
+
+    #[Route('/recipe/community', 'recipe.community', methods: ['GET'])]
+    public function indexPublic(
+        RecipeRepository $repository,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response {
+       // $cache = new FilesystemAdapter();
+       /* $data = $cache->get('recipes', function (ItemInterface $item) use ($repository) {
+            $item->expiresAfter(15);
+            return $repository->findPublicRecipe(null);
+        });*/
+
+        $recipes = $paginator->paginate(
+            $repository->findPublicRecipe(null),
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('pages/recipe/community.html.twig', [
+            'recipes' => $recipes
+        ]);
+    }
+
+
+
+
+
+    #[Security("is_granted('ROLE_USER') and (recipe.getIsPublic() === true || user === recipe.getUser())")]
+    #[Route('/recipe/{id}', name: 'recipe.show', methods:['GET'])]
+    public function show(Recipe $recipe): Response
+    {
+        return $this->render('pages/recipe/show.html.twig', [
+            'recipe' => $recipe,
+        ]);
+    }
+
     #[IsGranted('ROLE_USER')]
     #[Route('/recipe/new', name: 'recipe.new', methods:['GET', 'POST'])]
     public function newForm(Request $request, EntityManagerInterface $manager) : Response
